@@ -2,7 +2,7 @@ import express from "express";
 import { createServer } from "node:http";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
-import user from "user.js";
+import * as user from "./user.js";
 
 const port = 3000;
 
