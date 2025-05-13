@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<head>
+    <title>woaao</title>
+</head>
+<body>
+    <form id="signin-form" method="POST">
+        <input type="text" id="username" name="username">
+        <br><br>
+        <input type="submit" value="Submit">
+    </form>
+    <script>
+        const signin_form = document.getElementById("signin-form");
+
+        signin_form.addEventListener("submit", (event) => {
+            event.preventDefault();
+        })
+    </script>
+</body>
