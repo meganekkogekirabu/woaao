@@ -18,11 +18,29 @@ app.get("/", (req, res) => {
     res.sendFile(join(__dirname, "index.html"));
 });
 
-app.post("/", (req, res) => {
-    console.log("[server.js] request body: " + JSON.stringify(req.body));
-    console.log("[server.js] sending over to user.js")
-    const response = user.create_user(req.body.username, req.body.password)
-    res.send();
+app.post("/", async (req, res) => {
+    try {
+        const ret = await user.create_user(req.body.username, req.body.password);
+        res.status(200).json({
+            status: ret.status,
+            response: ret.response,
+        });
+    } catch(e) {
+        console.error("[server.js] Failed to create user:", e);
+        res.status(500).json({
+            error: "Failed to create user.",
+        });
+    }
+});
+
+app.get("/:filename", (req, res) => {
+    const filename = req.params.filename;
+
+    res.sendFile(join(__dirname, filename), (err) => {
+        if (err) {
+            res.status(404).sendFile(join(__dirname, "not_found.html"));
+        }
+    })
 })
 
 server.listen(port, () => {
