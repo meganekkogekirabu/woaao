@@ -23,10 +23,6 @@ auth().then((response) => {
     is_admin = response.is_admin;
 });
 
-if (is_admin) {
-    console.log("logged in as admin");
-}
-
 const socket = io();
 
 const form = document.getElementById("message-form");

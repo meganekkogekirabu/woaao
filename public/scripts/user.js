@@ -54,12 +54,16 @@ export async function sign_in(username, password) {
     const hash = row.password;
 
     if (bcrypt.compare(password, hash)) {
-        console.log("haii");
-        console.log(row.user_groups);
-        var is_admin = row.user_groups?.split(",")?.includes("admin") ?? false;
+        const is_admin = row.user_groups?.includes("admin") ?? false;
+
+        var response = "Authorisation succeeded! This tab should now automatically refresh."
+
+        if (is_admin) {
+            response = response + "\nYou are logged in as an admin.";
+        }
 
         return {
-            response : "Authorisation succeeded! This tab should now automatically refresh.",
+            response : response,
             username : username,
             is_admin : is_admin,
             status   : 200,
