@@ -75,8 +75,9 @@ app.post("/signin", async (req, res) => {
     try {
         const ret = await user.sign_in(req.body.username, req.body.password);
 
-        if (ret.cookie) {
-            req.session.username = ret.cookie;
+        if (ret.username) {
+            req.session.username = ret.username;
+            req.session.is_admin = ret.is_admin;
         }
 
         res.json({
@@ -90,13 +91,14 @@ app.post("/signin", async (req, res) => {
             error  : "Failed to authenticate user.",
         });
     }
-})
+});
 
 app.post("/auth", (req, res) => {
     res.json({
         username : req.session.username,
-    })
-})
+        is_admin : req.session.is_admin,
+    });
+});
 
 app.post("/logout", (req, res) => {
     req.session.username = null;
@@ -114,6 +116,7 @@ app.post("/messages", async (req, res) => {
 })
 
 app.get(["/chat.html", "/chat"], (req, res) => {
+    console.log(req.session);
     if (!req.session.username) {
         res.status(403);
         res.redirect("/");

@@ -16,11 +16,16 @@ async function auth() {
     });
 }
 
-var username;
+var username, is_admin;
 
 auth().then((response) => {
     username = response.username;
+    is_admin = response.is_admin;
 });
+
+if (is_admin) {
+    console.log("logged in as admin");
+}
 
 const socket = io();
 

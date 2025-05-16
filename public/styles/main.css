@@ -1,13 +1,11 @@
 @font-face {
   font-family: "Zpix";
-  src:
-    local("assets/zpix.ttf") format("ttf"),
-    local("Zpix");
+  src: local("assets/zpix.ttf") format("ttf"), local("Zpix");
 }
 
 body {
   min-height: 100vh;
-  background: linear-gradient(#F2F8F9, #FAD9FC);
+  background: linear-gradient(30deg, #fad9fc, #f2f8f9);
   background-repeat: no-repeat;
   background-size: contain;
   margin: 5px;
@@ -25,8 +23,8 @@ body {
 
 dialog {
   padding: 20px;
-  border: 1px solid #F39;
-  background: #FEFFEC;
+  border: 1px solid #f39;
+  background: #feffec;
   max-width: 90%;
   width: -webkit-fill-available, fit-content;
   margin: auto;
@@ -46,29 +44,29 @@ dialog {
 }
 
 button,
-input[type=submit] {
+input[type="submit"] {
   transition: color 0.2s;
 }
 
 button:not(.close-dialog):hover,
-input[type=submit]:hover,
+input[type="submit"]:hover,
 button:not(.close-dialog):focus-visible,
-input[type=submit]:focus-visible {
+input[type="submit"]:focus-visible {
   cursor: pointer;
   color: white;
-  background-color: #F39;
+  background-color: #f39;
 }
 
 button,
 input {
   border-radius: 0;
-  border: 1px solid #F39;
+  border: 1px solid #f39;
   background-color: white;
   padding: 10px;
 }
 
 button:not(.close-dialog),
-input[type=submit] {
+input[type="submit"] {
   width: 100px;
 }
 
