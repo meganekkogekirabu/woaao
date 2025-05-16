@@ -1,0 +1,76 @@
+@font-face {
+  font-family: "Zpix";
+  src: local("zpix.ttf") format("ttf");
+}
+
+body {
+  min-height: 100vh;
+  background: linear-gradient(#F2F8F9, #FAD9FC);
+  background-repeat: no-repeat;
+  background-size: contain;
+  margin: 20px;
+  overflow: hidden;
+}
+
+* {
+  font-family: "Zpix";
+  box-sizing: border-box;
+}
+
+*:focus {
+  outline: 0;
+}
+
+dialog {
+  padding: 20px;
+  border: 1px solid #F39;
+  background: #FEFFEC;
+  max-width: 90%;
+  width: -webkit-fill-available fit-content;
+  margin: auto;
+}
+
+.close-dialog {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  background: none;
+  border: none;
+  font-size: 20px;
+}
+
+.close-dialog:hover {
+  cursor: pointer;
+}
+
+button,
+input[type=submit] {
+  transition: color 0.2s;
+}
+
+button:not(.close-dialog):hover,
+input[type=submit]:hover,
+button:not(.close-dialog):focus-visible,
+input[type=submit]:focus-visible {
+  cursor: pointer;
+  color: white;
+  background-color: #F39;
+}
+
+button,
+input {
+  border-radius: 0;
+  border: 1px solid #F39;
+  background-color: white;
+  padding: 10px;
+}
+
+button:not(.close-dialog),
+input[type=submit] {
+  width: 100px;
+}
+
+.response-status {
+  margin-top: 15px;
+  max-width: 300px;
+}

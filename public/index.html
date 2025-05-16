@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<head>
+    <title>woaao</title>
+    <link rel="stylesheet" type="text/css" href="main.css">
+</head>
+<body>
+    <dialog id="signup">
+        <h3>Sign up</h3>
+        <button class="close-dialog">x</button>
+        <form id="signup-form" method="POST">
+            <label for="username">username:</label>
+            <input type="text" name="username" required>
+            <br><br>
+            <label for="password">password:</label>
+            <input type="password" name="password" required>
+            <br><br>
+            <input type="submit" value="Submit">
+        </form>
+        <div class="response-status"></div>
+    </dialog>
+    <button data-dialog-target="signup">Sign up</button>
+    <dialog id="signin">
+        <h3>Sign in</h3>
+        <button class="close-dialog">x</button>
+        <form id="signin-form" method="POST">
+            <label for="username">username:</label>
+            <input type="text" name="username" required>
+            <br><br>
+            <label for="password">password:</label>
+            <input type="password" name="password" required>
+            <br><br>
+            <input type="submit" value="Submit">
+        </form>
+        <div class="response-status"></div>
+    </dialog>
+    <button data-dialog-target="signin">Sign in</button>
+    <script src="index.js"></script>
+</body>
