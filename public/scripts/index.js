@@ -1,3 +1,18 @@
+async function auth() {
+    return await fetch("/auth", {
+        method: "POST",
+    })
+    .then((data) => {
+        return data.json();
+    });
+}
+
+auth().then((response) => {
+    if (response.username) {
+        window.location.href = "chat";
+    }
+})
+
 const signup_form = document.getElementById("signup-form");
 const signin_form = document.getElementById("signin-form");
 

@@ -26,3 +26,14 @@ export async function get(sql, params = []) {
     await db.close();
     return result;
 };
+
+export async function all(sql, params = []) {
+    const db = await open({
+        filename : join(__dirname, "chat.db"),
+        driver   : sqlite3.Database,
+    });
+
+    const result = await db.all(sql, params);
+    await db.close();
+    return result;
+}

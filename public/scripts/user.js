@@ -1,6 +1,5 @@
-import * as database from "../database.js";
+import * as database from "../../database.js";
 import bcrypt from "bcryptjs";
-import session from "express-session";
 
 export async function create_user(username, password) {
     if (username.length > 20 || password.length > 20) {
@@ -56,6 +55,7 @@ export async function sign_in(username, password) {
     if (bcrypt.compare(password, hash)) {
         return {
             response : "Authorisation succeeded! This tab should now automatically refresh.",
+            cookie   : username,
             status   : 200,
         };
     } else {

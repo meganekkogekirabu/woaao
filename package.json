@@ -5,7 +5,11 @@
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "express-session": "^1.18.1",
+    "express.io": "^1.1.13",
+    "socket.io": "^4.8.1",
     "sqlite": "^5.1.1",
-    "sqlite3": "^5.1.7"
+    "sqlite3": "^5.1.7",
+    "uglify-js": "^2.6.0",
+    "uuid": "^11.1.0"
   }
 }

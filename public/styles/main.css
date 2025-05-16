@@ -1,6 +1,8 @@
 @font-face {
   font-family: "Zpix";
-  src: local("zpix.ttf") format("ttf");
+  src:
+    local("assets/zpix.ttf") format("ttf"),
+    local("Zpix");
 }
 
 body {
@@ -8,7 +10,7 @@ body {
   background: linear-gradient(#F2F8F9, #FAD9FC);
   background-repeat: no-repeat;
   background-size: contain;
-  margin: 20px;
+  margin: 5px;
   overflow: hidden;
 }
 
@@ -26,7 +28,7 @@ dialog {
   border: 1px solid #F39;
   background: #FEFFEC;
   max-width: 90%;
-  width: -webkit-fill-available fit-content;
+  width: -webkit-fill-available, fit-content;
   margin: auto;
 }
 
