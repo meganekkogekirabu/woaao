@@ -116,12 +116,20 @@ app.post("/messages", async (req, res) => {
 })
 
 app.get(["/chat.html", "/chat"], (req, res) => {
-    console.log(req.session);
     if (!req.session.username) {
         res.status(403);
         res.redirect("/");
     } else {
         res.sendFile(join(__dirname, "public", "chat.html"))
+    }
+});
+
+app.get(["/admin.html", "/admin"], (req, res) => {
+    if (!req.session.is_admin) {
+        res.status(403);
+        res.redirect("/");
+    } else {
+        res.sendFile(join(__dirnasme, "public", "admin.html"));
     }
 });
 

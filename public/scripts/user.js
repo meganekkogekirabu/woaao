@@ -13,7 +13,8 @@ export async function create_user(username, password) {
         CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             username TEXT UNIQUE NOT NULL,
-            password TEXT NOT NULL
+            password TEXT NOT NULL,
+            user_groups TEXT
         );
     `);
     
