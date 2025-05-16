@@ -83,8 +83,6 @@ app.post("/signin", async (req, res) => {
         res.json({
             status   : ret.status,
             response : ret.response,
-            username : req.session.username,
-            is_admin : req.session.is_admin,
         });
     } catch (e) {
         console.error("[server.js] Failed to authenticate user:", e);

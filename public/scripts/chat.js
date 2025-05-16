@@ -12,6 +12,7 @@ async function auth() {
         method: "POST",
     })
     .then((data) => {
+        console.log(data);
         return data.json();
     });
 }
@@ -22,6 +23,10 @@ auth().then((response) => {
     username = response.username;
     is_admin = response.is_admin;
 });
+
+if (is_admin) {
+    document.getElementById("admin").style.display = "unset";
+}
 
 const socket = io();
 
