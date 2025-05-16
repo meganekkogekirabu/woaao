@@ -7,26 +7,27 @@ logout.addEventListener("click", async () => {
     window.location.href = "/";
 });
 
-async function auth() {
-    return await fetch("/auth", {
-        method: "POST",
-    })
-    .then((data) => {
-        console.log(data);
-        return data.json();
-    });
-}
+let username;
+let is_admin;
 
-var username, is_admin;
+fetch("/auth", {
+    method: "POST",
+})
+.then((response) => {
+    return response.json();
+})
+.then((data) => {
+    console.log(data);
+    username = data.username;
+    is_admin = data.is_admin;
 
-auth().then((response) => {
-    username = response.username;
-    is_admin = response.is_admin;
-});
-
-if (is_admin) {
-    document.getElementById("admin").style.display = "unset";
-}
+    if (is_admin === true) {
+        document.getElementById("admin").style.display = "unset";
+    }
+})
+.catch((e) => {
+    console.error("Error fetching authentication:", e);
+})
 
 const socket = io();
 

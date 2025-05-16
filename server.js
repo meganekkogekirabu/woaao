@@ -95,6 +95,7 @@ app.post("/signin", async (req, res) => {
 
 app.post("/auth", (req, res) => {
     res.json({
+        status   : 200,
         username : req.session.username,
         is_admin : req.session.is_admin,
     });
