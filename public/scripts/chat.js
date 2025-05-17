@@ -21,8 +21,25 @@ fetch("/api/auth", {
     }
     return response.json();
 })
-.then((data) => {
+.then(async (data) => {
     username = data.username;
+    
+    await fetch("/api/isdeleted", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username: data.username }),
+    })
+    .then((response) => {
+        return response.json();
+    })
+    .then(async (data) => {
+        if (data.deleted == 1) {
+            await fetch("/api/logout", {
+                method: "POST",
+            });
+            window.location.href = "/";
+        }
+    });
 
     if (data.is_admin) {
         document.getElementById("admin").style.display = "unset";
