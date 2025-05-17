@@ -53,18 +53,11 @@ body a {
     margin: 0;
 }
 
-[name] {
-    align-self: flex-start;
-    border-radius: 0;
-    border: solid 1px #F39;
-    background-color: #FEFFEC;
-}
-
 .user > div > input:hover {
     cursor: pointer;
 }
 
-[name] {
+[name]:not([type=text]) {
     width: 14px;
     height: 14px;
     min-width: 14px;
@@ -78,6 +71,8 @@ body a {
     position: relative;
     transition: background-color 0.2s;
     padding: 0;
+    align-self: flex-start;
+    border-radius: 0;
 }
 
 [name]:checked {
@@ -96,12 +91,12 @@ body a {
     line-height: 1;
 }
 
-[name]:hover {
+[name]:not([type=text]):hover {
     background-color: #F39;
     opacity: 0.8;
 }
 
-[name]:focus {
+[name]:not([type=text]):focus {
     outline: none;
 }
 
@@ -143,4 +138,45 @@ button.undelete:hover {
 
 .user > div > div:nth-of-type(1) {
     height: 35px;
+}
+
+#close-dialog {
+    all: unset;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    padding: 5px;
+}
+
+#close-dialog:hover,
+#close-dialog:focus {
+    cursor: pointer;
+}
+
+#rename-form {
+    margin: 20px;
+}
+
+#rename-dialog {
+    margin-top: 20px;
+}
+
+#rename-dialog::backdrop {
+    background-color: #444;
+}
+
+[name=newName] {
+    height: 42px;
+    border-radius: 0;
+    border: solid 1px #F39;
+    padding: 10px;
+}
+
+#rename-status {
+    margin-top: 15px;
+    max-width: 350px;
+    word-break: break-word;
 }

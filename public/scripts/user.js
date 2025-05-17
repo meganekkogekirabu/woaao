@@ -45,7 +45,7 @@ export async function sign_in(username, password) {
         SELECT * FROM users WHERE username = ?;
     `, [username]);
 
-    if (!row) {
+    if (!row || row?.deleted === 1) {
         return {
             response : "Incorrect username or password.",
             status   : 403,

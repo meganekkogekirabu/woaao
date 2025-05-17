@@ -9,6 +9,17 @@
 </head>
 <body>
     <h3><a href="/chat">&laquo;&nbsp;</a>Administration panel</h3>
+    <dialog id="rename-dialog">
+        <form id="rename-form">
+            <h3>Rename user</h3>
+            <button id="close-dialog">x</button>
+            <p id="oldName"></p>
+            <label for="newName">new username:</label>
+            <input name="newName" type="text">
+            <input type="submit" value="done">
+            <div id="rename-status"></div>
+        </form>
+    </dialog>
     <div id="users"></div>
     <script src="scripts/admin.js"></script>
 </body>

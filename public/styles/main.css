@@ -58,8 +58,6 @@ input[type="submit"],
 button:not(.close-dialog, .show-user-dialog):hover,
 input[type="submit"]:hover,
 ::file-selector-button:hover,
-button:not(.close-dialog, .show-user-dialog):focus,
-input[type="submit"]:focus,
 button:not(.close-dialog, .show-user-dialog):focus-visible,
 input[type="submit"]:focus-visible {
   cursor: pointer;
@@ -68,7 +66,8 @@ input[type="submit"]:focus-visible {
 }
 
 button,
-input:not([type="file"]),
+input:not([type="file"], [type="text"]),
+[name=username],
 ::file-selector-button {
   border-radius: 0;
   border: 1px solid #f39;

@@ -8,6 +8,55 @@ fetch("/api/auth", {
 .then((response) => response.json())
 .then(async (data) => {
     await showUserDialog(data.username, "userDialogContainer");
+    const rename = document.createElement("button");
+    rename.style.all = "unset";
+    rename.style.cursor = "pointer";
+    rename.innerHTML = "&#9998;&nbsp;";
+    rename.title = "Rename this user";
+    rename.addEventListener("click", () => {
+        const dialog = document.getElementById("rename-dialog");
+        const oldName = document.getElementById("oldName");
+        oldName.textContent = `old username: ${data.username}`;
+    
+        dialog.show();
+    
+        const dialogResult = new Promise((resolve, reject) => {
+            document.getElementById("close-dialog").addEventListener("click", () => {
+                dialog.close();
+                reject('dialog closed');
+            }, { once: true });
+    
+            const form = document.getElementById("rename-form");
+            form.addEventListener("submit", (event) => {
+                event.preventDefault();
+                const formData = new FormData(form);
+                resolve(formData);
+            }, { once: true });
+        });
+    
+        dialogResult
+            .then((formData) => {
+                return fetch("/api/rename", {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({
+                        target: data.username,
+                        newName: formData.get("newName"),
+                    })
+                });
+            })
+            .then((response) => response.json())
+            .then((data) => {
+                document.getElementById("rename-status").textContent = data.response;
+                window.location.reload();
+            })
+            .catch((error) => {
+                if (error !== 'dialog closed') {
+                    console.error("Error:", error);
+                }
+            });
+    });
+    document.querySelector(".wrapper > div > div").prepend(rename);
     document.querySelector(".wrapper").classList.remove("wrapper");
 })
 .catch((e) => {

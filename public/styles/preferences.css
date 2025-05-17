@@ -100,3 +100,44 @@ body {
 #userDialogContainer > div:nth-child(1) > div:nth-child(2) > div:nth-child(2) {
   align-self: flex-start;
 }
+
+#close-dialog {
+    all: unset;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    padding: 5px;
+}
+
+#close-dialog:hover,
+#close-dialog:focus {
+    cursor: pointer;
+}
+
+#rename-form {
+    margin: 20px;
+}
+
+#rename-dialog {
+    margin-top: 20px;
+}
+
+#rename-dialog::backdrop {
+    background-color: #444;
+}
+
+[name=newName] {
+    height: 42px;
+    border-radius: 0;
+    border: solid 1px #F39;
+    padding: 10px;
+}
+
+#rename-status {
+    margin-top: 15px;
+    max-width: 350px;
+    word-break: break-word;
+}

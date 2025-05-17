@@ -10,6 +10,17 @@
 </head>
 <body>
     <h3><a href="/chat">&laquo;&nbsp;</a>Preferences</h3>
+    <dialog id="rename-dialog">
+        <form id="rename-form">
+            <h3>Rename user</h3>
+            <button id="close-dialog">x</button>
+            <p id="oldName"></p>
+            <label for="newName">new username:</label>
+            <input name="newName" type="text">
+            <input type="submit" value="done">
+            <div id="rename-status"></div>
+        </form>
+    </dialog>
     <div id="userDialogContainer"></div>
     <form id="profilePicForm" enctype="multipart/form-data">
         <input type="file" id="profilePicInput" name="profile_pic" accept="image/*">

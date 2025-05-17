@@ -42,6 +42,57 @@ getUsers().then((response) => {
         const user_header = document.createElement("div");
         const username = document.createElement("p");
 
+        const rename = document.createElement("button");
+        rename.style.all = "unset";
+        rename.style.cursor = "pointer";
+        rename.innerHTML = "&#9998;&nbsp;";
+        rename.title = "Rename this user";
+        rename.addEventListener("click", () => {
+            const dialog = document.getElementById("rename-dialog");
+            const oldName = document.getElementById("oldName");
+            oldName.textContent = `old username: ${user.username}`;
+        
+            dialog.show();
+        
+            const dialogResult = new Promise((resolve, reject) => {
+                document.getElementById("close-dialog").addEventListener("click", () => {
+                    dialog.close();
+                    reject('dialog closed');
+                }, { once: true });
+        
+                const form = document.getElementById("rename-form");
+                form.addEventListener("submit", (event) => {
+                    event.preventDefault();
+                    const formData = new FormData(form);
+                    resolve(formData);
+                }, { once: true });
+            });
+        
+            dialogResult
+                .then((formData) => {
+                    return fetch("/api/rename", {
+                        method: "POST",
+                        headers: {"Content-Type": "application/json"},
+                        body: JSON.stringify({
+                            target: user.username,
+                            newName: formData.get("newName"),
+                        })
+                    });
+                })
+                .then((response) => response.json())
+                .then((data) => {
+                    document.getElementById("rename-status").textContent = data.response;
+                    window.location.reload();
+                })
+                .catch((error) => {
+                    if (error !== 'dialog closed') {
+                        console.error("Error:", error);
+                    }
+                });
+        });
+
+        username.appendChild(rename);
+
         const username_main = document.createElement("b");
         username_main.textContent = user.username;
         username.appendChild(username_main);

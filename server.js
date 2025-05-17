@@ -296,6 +296,10 @@ app.post("/api/rename", async (req, res) => {
             UPDATE users SET username = ? WHERE username = ?;
         `, [newName, target]);
 
+        await database.run(`
+            UPDATE messages SET username = ? WHERE username = ?;
+        `, [newName, target]);
+
         res.json({
             status   : 200,
             response : `Successfully renamed user ${target} to ${newName}`,
