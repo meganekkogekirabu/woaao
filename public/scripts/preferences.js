@@ -12,7 +12,7 @@ fetch("/api/auth", {
 })
 .catch((e) => {
     console.error("Error fetching authentication:", e);
-    //window.location.href = "/";
+    window.location.href = "/";
 });
 
 document.getElementById('profilePicInput').addEventListener('change', function(e) {
