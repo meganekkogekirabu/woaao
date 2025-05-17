@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>preferences</title>
+    <link rel="stylesheet" type="text/css" href="styles/main.css">
+    <link rel="stylesheet" type="text/css" href="styles/preferences.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css">
+</head>
+<body>
+    <h3><a href="/chat">&laquo;&nbsp;</a>Preferences</h3>
+    <div id="userDialogContainer"></div>
+    <form id="profilePicForm" enctype="multipart/form-data">
+        <input type="file" id="profilePicInput" name="profile_pic" accept="image/*">
+        <div id="imagePreviewContainer">
+            <img id="imagePreview">
+            <br><br>
+            <button type="button" id="cropButton">
+                <img src="/assets/crop.png">
+            </button>
+        </div>
+        <div id="cropModal">
+            <div id="cropModalContent">
+                <img id="croppingImage">
+                <div id="cropActions">
+                    <button type="button" id="cancelCrop">cancel</button>
+                    <button type="button" id="confirmCrop">apply</button>
+                </div>
+            </div>
+        </div>
+        <button type="submit" id="uploadButton" disabled>Upload</button>
+    </form>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+    <script src="scripts/profile.js"></script>
+    <script src="scripts/preferences.js"></script>
+</body>

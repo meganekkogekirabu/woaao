@@ -21,49 +21,117 @@
 }
 
 #messages {
-  list-style-type: none;
-  position: fixed;
-  padding: 0;
   display: flex;
-  justify-content: space-between;
   flex-direction: column;
+  align-items: flex-start;
   width: 100%;
-  margin-top: 37px;
+  overflow-x: hidden;
+  padding-left: 0;
 }
 
-#messages > li {
+.message-container {
+  max-width: 100%;
+  width: fit-content;
+  width: -moz-fit-content;
+  flex: 0 1 auto;
+  word-break: break-word;
   padding: 0.5rem 1rem;
+  display: flex;
+  width: 100%;
+  box-sizing: border-box;
+  flex-direction: column;
 }
 
-#logout {
-  position: fixed;
+.message-wrapper {
+  display: flex;
 }
 
-.own-message {
-  align-self: flex-end;
+.profile-pic {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  margin: 0 10px;
+  z-index: -1;
+  position: sticky;
+  filter: drop-shadow(0 0 4px #AAA);
 }
 
-.own-message > .message-content {
-  background-color: #fad9fc;
-  padding: 10px;
-  border-radius: 0.5rem;
-  float: right;
+.message-content-container {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 15px;
+  border-radius: 18px;
+  max-width: 100%;
 }
 
 .message-header {
-  margin-bottom: 0;
+  font-size: 0.8em;
+  opacity: 0.8;
+  margin: 5px 0;
+}
+
+.message-text {
+  margin: 0;
+  word-wrap: break-word;
+}
+
+.own-message {
+  justify-content: flex-end;
+}
+
+.own-message .message-wrapper {
+  flex-direction: row-reverse;
+}
+
+.own-message .message-content-container {
+  background-color: #fad9fc;
+  color: #000;
+  border-bottom-right-radius: 0;
 }
 
 .other-message {
-  align-self: flex-start;
+  justify-content: flex-start;
 }
 
-.other-message > .message-content {
+.other-message .message-content-container {
   background-color: #f2f8f9;
-  padding: 10px;
-  border-radius: 0.5rem;
+  color: #000;
+  border-bottom-left-radius: 0;
 }
 
-.message-content {
-  width: fit-content;
+@media (max-width: 600px) {
+  .message-wrapper {
+    max-width: 90%;
+  }
+  
+  .profile-pic {
+    width: 32px;
+    height: 32px;
+  }
+
+  #message-form > input[type="submit"] {
+    display: none;
+  }
+}
+
+button.show-user-dialog {
+  all: unset;
+  width: unset;
+}
+
+button.show-user-dialog:hover {
+  all: unset;
+  cursor: pointer;
+}
+
+.own-message #userDialogContainer .wrapper {
+  float: right;
+}
+
+#userDialogContainer {
+  margin: 10px;
+}
+
+#profilePicDisplay {
+  filter: drop-shadow(0 0 4px #AAA);
 }

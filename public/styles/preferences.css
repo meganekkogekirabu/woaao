@@ -1,0 +1,102 @@
+#imagePreviewContainer {
+    display: none;
+    margin: 20px 0;
+}
+
+#imagePreview {
+    max-width: 100%;
+    max-height: 300px;
+    border: 1px solid #ddd;
+}
+
+#cropModal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.9);
+    z-index: 1000;
+    overflow: hidden;
+}
+
+#cropModalContent {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 600px;
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+#cropperContainer {
+    width: 100%;
+    height: 60vh;
+    max-height: 500px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+#croppingImage {
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+#cropActions {
+    margin-top: 15px;
+    text-align: right;
+}
+
+#cropButton {
+    all: unset;
+    margin-top: 10px;
+}
+
+#cropButton {
+    cursor: pointer;
+}
+
+#cropButton img {
+    width: 20px;
+}
+
+#cancelCrop {
+    background-color: #F39;
+    color: #FFF;
+    opacity: 0.7;
+}
+
+#cancelCrop:hover {
+    background-color: #FFF;
+    color: #000;
+}
+
+body a {
+    color: black;
+    text-decoration: none;
+}
+
+body {
+    margin: 30px;
+}
+
+#profilePicDisplay {
+    height: 120px !important;
+    width: 120px !important;
+    margin-bottom: 15px;
+    outline: solid 1px #F39;
+}
+
+#cropModalContent > .cropper-container {
+    width: unset !important;
+}
+
+#userDialogContainer > div:nth-child(1) > div:nth-child(2) > div:nth-child(2) {
+  align-self: flex-start;
+}

@@ -1,19 +1,20 @@
 @font-face {
   font-family: "Zpix";
-  src: local("assets/zpix.ttf") format("ttf"), local("Zpix");
+  src:
+    url("assets/zpix.ttf") format("truetype")
+    local("zpix");
 }
 
 body {
-  min-height: 100vh;
   background: linear-gradient(30deg, #fad9fc, #f2f8f9);
-  background-repeat: no-repeat;
-  background-size: contain;
+  background-attachment: fixed;
   margin: 5px;
   overflow: hidden;
+  -webkit-text-size-adjust: 100%;
 }
 
 * {
-  font-family: "Zpix";
+  font-family: "Zpix", monospace, sans-serif;
   box-sizing: border-box;
 }
 
@@ -26,8 +27,10 @@ dialog {
   border: 1px solid #f39;
   background: #feffec;
   max-width: 90%;
-  width: -webkit-fill-available, fit-content;
+  width: fit-content;
+  width: -moz-fit-content;
   margin: auto;
+  position: fixed;
 }
 
 .close-dialog {
@@ -37,19 +40,26 @@ dialog {
   background: none;
   border: none;
   font-size: 20px;
+  padding: 5px;
 }
 
-.close-dialog:hover {
+.close-dialog:hover,
+.close-dialog:focus {
   cursor: pointer;
 }
 
 button,
-input[type="submit"] {
-  transition: color 0.2s;
+input[type="submit"],
+::file-selector-button {
+  transition: color 0.2s, background-color 0.2s;
+  min-height: 44px;
 }
 
 button:not(.close-dialog):hover,
 input[type="submit"]:hover,
+::file-selector-button:hover,
+button:not(.close-dialog):focus,
+input[type="submit"]:focus,
 button:not(.close-dialog):focus-visible,
 input[type="submit"]:focus-visible {
   cursor: pointer;
@@ -58,11 +68,24 @@ input[type="submit"]:focus-visible {
 }
 
 button,
-input {
+input:not([type="file"]),
+::file-selector-button {
   border-radius: 0;
   border: 1px solid #f39;
   background-color: white;
   padding: 10px;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+input[type="file"] {
+  font-family: "Zpix", monospace, sans-serif;
+}
+
+::file-selector-button {
+  font-family: "Zpix", monospace, sans-serif;
+  margin-right: 15px;
 }
 
 button:not(.close-dialog),
@@ -72,5 +95,44 @@ input[type="submit"] {
 
 .response-status {
   margin-top: 15px;
-  max-width: 300px;
+  max-width: 350px;
+  word-break: break-word;
+}
+
+.wrapper {
+  padding: 20px;
+  border: 1px solid #f39;
+  background: #feffec;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  body {
+    margin: 0;
+    padding: 5px;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  textarea, input:not([type="file"]) {
+    padding: 8px;
+    font-size: 14px;
+  }
+
+  button:not(.close-dialog) {
+    margin: 5px 0;
+    width: 100%;
+  }
+
+  dialog {
+    padding: 15px;
+    width: 95%;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
 }

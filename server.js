@@ -8,11 +8,41 @@ import session from "express-session";
 import { v4 as uuidv4 } from "uuid";
 import { Server } from "socket.io";
 import * as database from "./database.js";
+import sharp from "sharp";
+import multer from "multer";
+import sanitizeFilename from "sanitize-filename";
+import fs from "fs/promises";
+import favicon from "serve-favicon";
 
 const port = 3000;
+const hostname = "192.168.10.101";
 
 const app = express();
 const server = createServer(app);
+
+const upload = multer({
+    storage: multer.memoryStorage(),
+    limits: {
+      fileSize: 5 * 1024 * 1024, // 5MB
+      files: 1
+    },
+    fileFilter: (req, file, cb) => {
+        if (file.mimetype.startsWith("image/")) {
+            cb(null, true);
+        } else {
+            cb(new Error("Only image files are allowed!"), false);
+        }
+    }
+});
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const profilePicsDir = join(__dirname, "public", "assets", "profile")
+
+try {
+    await fs.mkdir(profilePicsDir, { recursive: true });
+} catch (err) {
+    console.error("Error creating profile pictures directory:", err);
+}
 
 const io = new Server(server);
 
@@ -36,6 +66,8 @@ io.on("connection", (socket) => {
     });
 });
 
+app.use(favicon(join(__dirname, "public", "assets", "favicon.ico")));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -49,13 +81,11 @@ app.use(session({
     },
 }));
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-
-app.get("/", (req, res) => {
+app.get("/", (_, res) => {
     res.sendFile(join(__dirname, "public", "index.html"));
 });
 
-app.post("/signup", async (req, res) => {
+app.post("/api/signup", async (req, res) => {
     try {
         const ret = await user.create_user(req.body.username, req.body.password);
         res.json({
@@ -71,13 +101,14 @@ app.post("/signup", async (req, res) => {
     }
 });
 
-app.post("/signin", async (req, res) => {
+app.post("/api/signin", async (req, res) => {
     try {
         const ret = await user.sign_in(req.body.username, req.body.password);
 
         if (ret.username) {
             req.session.username = ret.username;
             req.session.is_admin = ret.is_admin;
+            req.session.user_id = ret.user_id;
         }
 
         res.json({
@@ -93,20 +124,21 @@ app.post("/signin", async (req, res) => {
     }
 });
 
-app.post("/auth", (req, res) => {
+app.post("/api/auth", (req, res) => {
     res.json({
         status   : 200,
         username : req.session.username,
         is_admin : req.session.is_admin,
+        user_id  : req.session.user_id,
     });
 });
 
-app.post("/logout", (req, res) => {
-    req.session.username = null;
+app.post("/api/logout", (req, res) => {
+    req.session.destroy();
     res.sendStatus(200);
 })
 
-app.post("/messages", async (req, res) => {
+app.post("/api/messages", async (req, res) => {
     if (!req.session.username) {
         res.status(403).send("Not authorised.");
     } else {
@@ -116,12 +148,144 @@ app.post("/messages", async (req, res) => {
     }
 })
 
+app.post("/api/users", async (req, res) => {
+    if (!req.session.is_admin) {
+        res.status(403).send("Not authorised.");
+    } else {
+        res.json(await database.all(`
+            SELECT * FROM users;
+        `));
+    }
+});
+
+
+// endpoint to run db queries for admin.js
+app.post("/api/dbrun", async (req, res) => {
+    if (!req.session.is_admin) {
+        res.status(403);
+        res.redirect("/");
+    } else {
+        res.send(
+            await database.run(
+                req.body.sql,
+                req.body.params,
+            )
+        );
+    }
+});
+
+// endpoint to check if a user is deleted for chat.js
+app.post("/api/isdeleted", async (req, res) => {
+    if (!req.session.username) {
+        res.status(403);
+        res.redirect("/")
+    } else {
+        res.send(
+            await database.get(`
+                SELECT deleted FROM users WHERE username = ?
+            `, [req.body.username])
+        );
+    }
+});
+
+app.get('/api/profile', async (req, res) => {
+    const { username } = req.query;
+    
+    if (!username) {
+        return res.json({
+            status   : 400,
+            response : "Username is required.",
+        });
+    }
+
+    function escapeHTML(str) {
+        return str.toString()
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+    try {
+        const user = await database.get(
+            "SELECT id FROM users WHERE username = ?", 
+            [username]
+        );
+
+        if (!user) {
+            return res.json({
+                status   : 404,
+                response : `User ${username} not found.`,
+            })
+        }
+
+        res.send(`
+            <div style="display: flex; flex-direction: column; gap: 10px; width: fit-content;" class="wrapper">
+                <h4 style="margin: 0;">Profile</h4>
+                <div style="display: flex; align-items: center;">
+                    <img id="profilePicDisplay" alt="Profile picture" 
+                         src="/assets/profile/${encodeURIComponent(username)}.webp" 
+                         style="width: 50px; height: 50px; object-fit: cover;"
+                         onerror="this.src='/assets/profile/default-profile.webp'">
+                    <div style="margin-left: 20px; font-size: 17px;">
+                        <b id="usernameHeader">${escapeHTML(username)}</b>
+                        <small id="userIdHeader">#${escapeHTML(user.id.toString())}</small>
+                    </div>
+                </div>
+            </div>
+        `);
+    } catch (error) {
+        console.error('Database error:', error);
+        res.status(500).send('Error fetching user information');
+    }
+});
+
+app.post("/api/profile/upload", upload.single("profile_pic"), async (req, res) => {
+    if (!req.session.username) {
+        return res.json({
+            status : 403,
+            error  : "Not authorised",
+        });
+    }
+
+    if (!req.file) {
+        return res.json({
+            status : 400,
+            error  : "No file uploaded",
+        });
+    }
+
+    try {
+        const sanitizedFilename = sanitizeFilename(`${req.session.username}.webp`);
+        const outputPath = join(profilePicsDir, sanitizedFilename);
+
+        await sharp(req.file.buffer)
+            .resize(250, 250, {
+                fit: "cover",
+                position: "center"
+            })
+            .webp({ quality: 80 })
+            .toFile(outputPath);
+
+        res.json({
+            status   : 200,
+            response : "Profile picture uploaded successfully"
+        });
+    } catch (err) {
+        res.json({
+            status : 500,
+            error  : "Error processing image:" + err,
+        });
+    }
+});
+
 app.get(["/chat.html", "/chat"], (req, res) => {
     if (!req.session.username) {
         res.status(403);
         res.redirect("/");
     } else {
-        res.sendFile(join(__dirname, "public", "chat.html"))
+        res.sendFile(join(__dirname, "public", "chat.html"));
     }
 });
 
@@ -130,26 +294,47 @@ app.get(["/admin.html", "/admin"], (req, res) => {
         res.status(403);
         res.redirect("/");
     } else {
-        res.sendFile(join(__dirnasme, "public", "admin.html"));
+        res.sendFile(join(__dirname, "public", "admin.html"));
     }
 });
 
-app.get("/:filename", (req, res) => {
-    res.sendFile(join(__dirname, "public", req.params.filename), (err) => {
+app.get("/profile/:username", async (req, res) => {
+    try {
+        const sanitizedUsername = sanitizeFilename(req.params.username);
+        const imagePath = join(profilePicsDir, `${sanitizedUsername}.webp`);
+
+        try {
+            await fs.access(imagePath);
+        } catch {
+            const defaultImagePath = join(__dirname, "public", "assets", "profile", "default-profile.webp");
+            return res.sendFile(defaultImagePath);
+        }
+
+        res.sendFile(imagePath);
+    } catch (err) {
+        console.error("Error serving profile picture:", err);
+        res.status(500).send("Error retrieving profile picture");
+    }
+});
+
+app.get(/preferences(\.html)?$/, (req, res) => {
+    if (!req.session.username) {
+        res.status(403);
+        res.redirect("/");
+    } else {
+        res.sendFile(join(__dirname, "public", "preferences.html"));
+    }
+});
+
+app.get(/^\/([^\.]+)(\..+)?/, (req, res) => {
+    const fullPath = join(__dirname, "public", req.params[0] + (req.params[1] || ".html"));
+    res.sendFile(fullPath, (err) => {
         if (err) {
             res.status(404).sendFile(join(__dirname, "public", "not_found.html"));
         }
     });
 });
 
-app.get("/:dir/:filename", (req, res) => {
-    res.sendFile(join(__dirname, "public", req.params.dir, req.params.filename), (err) => {
-        if (err) {
-            res.status(404).sendFile(join(__dirname, "public", "not_found.html"));
-        }
-    })
-})
-
-server.listen(port, () => {
+server.listen(port, hostname, () => {
     console.log(`[server.js] listening on port ${port}`);
 });
