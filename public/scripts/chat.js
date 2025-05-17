@@ -84,7 +84,7 @@ function appendMessage(msg) {
     
     const profilePic = document.createElement("img");
     profilePic.classList.add("profile-pic");
-    profilePic.src = `/profile/${msg.username}`;
+    profilePic.src = `assets/profile/${msg.username}.webp`;
     profilePic.alt = `${msg.username}'s profile picture`;
     profilePic.onerror = function() {
         this.src = 'assets/profile/default-profile.webp';
