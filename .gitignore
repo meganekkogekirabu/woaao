@@ -136,3 +136,5 @@ dist
 .pnp.*
 
 *.db
+public/assets/profile/*.webp
+!public/assets/profile/default-profile.webp

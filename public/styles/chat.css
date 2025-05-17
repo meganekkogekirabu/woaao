@@ -116,7 +116,6 @@
 
 button.show-user-dialog {
   all: unset;
-  width: unset;
 }
 
 button.show-user-dialog:hover {

@@ -55,12 +55,12 @@ input[type="submit"],
   min-height: 44px;
 }
 
-button:not(.close-dialog):hover,
+button:not(.close-dialog, .show-user-dialog):hover,
 input[type="submit"]:hover,
 ::file-selector-button:hover,
-button:not(.close-dialog):focus,
+button:not(.close-dialog, .show-user-dialog):focus,
 input[type="submit"]:focus,
-button:not(.close-dialog):focus-visible,
+button:not(.close-dialog, .show-user-dialog):focus-visible,
 input[type="submit"]:focus-visible {
   cursor: pointer;
   color: white;

@@ -263,14 +263,14 @@ app.post("/api/profile/upload", upload.single("profile_pic"), async (req, res) =
         await sharp(req.file.buffer)
             .resize(250, 250, {
                 fit: "cover",
-                position: "center"
+                position: "center",
             })
             .webp({ quality: 80 })
             .toFile(outputPath);
 
         res.json({
             status   : 200,
-            response : "Profile picture uploaded successfully"
+            response : "Profile picture uploaded successfully",
         });
     } catch (err) {
         res.json({
@@ -279,6 +279,34 @@ app.post("/api/profile/upload", upload.single("profile_pic"), async (req, res) =
         });
     }
 });
+
+app.post("/api/rename", async (req, res) => {
+    const target = req.body.target;
+    const newName = req.body.newName;
+
+    try {
+        if (target !== req.session.username && !req.session.is_admin) {
+            return res.json({
+                status   : 403,
+                response : "Not authorised",
+            });
+        }
+
+        await database.run(`
+            UPDATE users SET username = ? WHERE username = ?;
+        `, [newName, target]);
+
+        res.json({
+            status   : 200,
+            response : `Successfully renamed user ${target} to ${newName}`,
+        });
+    } catch (err) {
+        res.json({
+            status : 500,
+            error  : "Error renaming user:" + err,
+        });
+    }
+})
 
 app.get(["/chat.html", "/chat"], (req, res) => {
     if (!req.session.username) {
@@ -317,7 +345,7 @@ app.get("/profile/:username", async (req, res) => {
     }
 });
 
-app.get(/preferences(\.html)?$/, (req, res) => {
+app.get(["/preferences.html", "/preferences"], (req, res) => {
     if (!req.session.username) {
         res.status(403);
         res.redirect("/");
