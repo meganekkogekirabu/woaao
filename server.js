@@ -87,7 +87,7 @@ app.post("/api/signup", async (req, res) => {
             response : ret.response,
         });
     } catch(e) {
-        console.error("[server.js] Failed to create user:", e);
+        console.error("Failed to create user:", e);
         res.json({
             status : 500,
             error  : "Failed to create user.",
@@ -110,7 +110,7 @@ app.post("/api/signin", async (req, res) => {
             response : ret.response,
         });
     } catch (e) {
-        console.error("[server.js] Failed to authenticate user:", e);
+        console.error("Failed to authenticate user:", e);
         res.json({
             status : 500,
             error  : "Failed to authenticate user.",
@@ -362,5 +362,5 @@ app.get(/^\/([^\.]+)(\..+)?/, (req, res) => {
 });
 
 server.listen(port, hostname, () => {
-    console.log(`[server.js] listening at http://${hostname}:${port}`);
+    console.log(`listening at http://${hostname}:${port}`);
 });

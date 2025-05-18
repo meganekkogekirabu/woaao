@@ -1,5 +1,5 @@
 async function auth() {
-    return await fetch("/api/auth", {
+    return await fetch("/auth", {
         method: "POST",
     })
     .then((data) => {
@@ -25,7 +25,7 @@ signup_form.addEventListener("submit", async (event) => {
     const password = form_data.get("password");
 
     try {
-        const response = await fetch("/api/signup", {
+        const response = await fetch("/signup", {
             method: "POST",
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded",
@@ -56,7 +56,7 @@ signin_form.addEventListener("submit", async (event) => {
     const password = form_data.get("password");
 
     try {
-        const response = await fetch("/api/signin", {
+        const response = await fetch("/signin", {
             method: "POST",
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded",

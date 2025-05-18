@@ -3,11 +3,11 @@ async function getUsers() {
         method: "POST",
     })
     if (!response.ok) {
-        throw new Error("[admin.js] network response was not ok for getUsers()")
+        throw new Error("network response was not ok for getUsers()")
     }
     const contentType = response.headers.get("content-type");
     if (!contentType || !contentType.includes("application/json")) {
-        throw new TypeError(`[admin.js] expected application/json for getUsers() but received ${contentType}`);
+        throw new TypeError(`expected application/json for getUsers() but received ${contentType}`);
     }
     return response.json();
 }
@@ -24,11 +24,11 @@ async function dbRun(sql, params) {
         }),
     });
     if (!response.ok) {
-        throw new Error("[admin.js] network response was not ok for dbRun()")
+        throw new Error("network response was not ok for dbRun()")
     }
     const contentType = response.headers.get("content-type");
     if (!contentType || !contentType.includes("application/json")) {
-        throw new TypeError(`[admin.js] expected application/json for dbRun() but received ${contentType}`);
+        throw new TypeError(`expected application/json for dbRun() but received ${contentType}`);
     }
     return response.json();
 }
@@ -136,11 +136,11 @@ getUsers().then((response) => {
                     })
                     .then((response) => {
                         if (!response.ok) {
-                            throw new Error("[admin.js] network response was not ok for /auth")
+                            throw new Error("network response was not ok for /auth")
                         }
                         const contentType = response.headers.get("content-type");
                         if (!contentType || !contentType.includes("application/json")) {
-                            throw new TypeError(`[admin.js] expected application/json for /auth but received ${contentType}`);
+                            throw new TypeError(`expected application/json for /auth but received ${contentType}`);
                         }
                         return response.json();
                     })
@@ -197,11 +197,11 @@ getUsers().then((response) => {
                 })
                 .then((response) => {
                     if (!response.ok) {
-                        throw new Error("[admin.js] network response was not ok for /auth")
+                        throw new Error("network response was not ok for /auth")
                     }
                     const contentType = response.headers.get("content-type");
                     if (!contentType || !contentType.includes("application/json")) {
-                        throw new TypeError(`[admin.js] expected application/json for /auth but received ${contentType}`);
+                        throw new TypeError(`expected application/json for /auth but received ${contentType}`);
                     }
                     return response.json();
                 })
