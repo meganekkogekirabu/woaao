@@ -38,12 +38,6 @@ const upload = multer({
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const profilePicsDir = join(__dirname, "public", "assets", "profile")
 
-try {
-    await fs.mkdir(profilePicsDir, { recursive: true });
-} catch (err) {
-    console.error("Error creating profile pictures directory:", err);
-}
-
 const io = new Server(server);
 
 io.on("connection", (socket) => {
