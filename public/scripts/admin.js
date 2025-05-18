@@ -115,11 +115,9 @@ getUsers().then((response) => {
 
         const timestamp = document.createElement("div");
         timestamp.classList.add("timestamp");
-        if (!user.created_at) {
-            timestamp.textContent = "Creation date unknown.";
-        } else {
-            timestamp.textContent = `Created at ${new Date(user.created_at).toLocaleString()}`;
-        }
+        timestamp.textContent = user.created_at 
+            ? `Created at ${new Date(user.created_at).toLocaleString()}`
+            : "Creation date unknown.";
         left.appendChild(timestamp);
 
         item.appendChild(left);
