@@ -13,11 +13,11 @@ fetch("/api/auth", {
 })
 .then((response) => {
     if (!response.ok) {
-        throw new Error("network response was not ok for /auth")
+        throw new Error("network response was not ok for /api/auth")
     }
     const contentType = response.headers.get("content-type");
     if (!contentType || !contentType.includes("application/json")) {
-        throw new TypeError(`expected application/json for /auth but received ${contentType}`);
+        throw new TypeError(`expected application/json for /api/auth but received ${contentType}`);
     }
     return response.json();
 })

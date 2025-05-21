@@ -15,7 +15,7 @@ import fs from "fs/promises";
 import favicon from "serve-favicon";
 
 const port = 3000;
-const hostname = process.argv[2] ?? "192.168.10.101"; // pass the hostname as an argument to node
+const hostname = process.argv[2] ?? "127.0.0.1"; // pass the hostname as an argument to node
 
 const app = express();
 const server = createServer(app);
